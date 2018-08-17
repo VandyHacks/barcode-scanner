@@ -3,8 +3,25 @@ import {snackbar} from './snackbar.js';
 import styles from '../css/styles.css';
 import isURL from 'is-url';
 
+let selectedEvent = null;
+let scanning = false;
+let qrData = null;
+let events = [];
+let token = "";
+let tokenValid = false;
+let authError = null;
+
 main();
 function main() {
+  if (window.localStorage.storedToken2) {
+    tokenValid = true;
+    token = window.localStorage.storedToken2;
+  }
+  console.log(token);
+  token = {
+    "token": "dinner"
+  }
+
   setupServiceWorker();
   window.addEventListener("DOMContentLoaded", onDOMContentLoad);
 }
@@ -70,6 +87,11 @@ function onDOMContentLoad() {
     scanner.style.display = 'block';
 
     QRReader.scan(result => {
+      let fetchData = { 
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ token: token })
+      }
       copiedText = result;
       textBox.value = result;
       textBox.select();
@@ -79,6 +101,14 @@ function onDOMContentLoad() {
       }
       dialogElement.classList.remove('app__dialog--hide');
       dialogOverlayElement.classList.remove('app__dialog--hide');
+      fetch('http://localhost:3000/auth/eventcode', fetchData).then(res => {
+        if (res.ok) {
+            this.tokenValid = true;
+            window.localStorage.storedToken2 = this.token;
+        } else {
+            this.authError = 'Invalid token';
+        }
+      })
     });
   }
 
