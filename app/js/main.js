@@ -10,6 +10,12 @@ let events = [];
 let token = "";
 let tokenValid = false;
 let authError = null;
+function tokenHeader() {
+  return new Headers({
+      'x-event-secret': token,
+      'Content-Type': 'application/json'
+  });
+};
 
 main();
 function main() {
@@ -17,10 +23,12 @@ function main() {
     tokenValid = true;
     token = window.localStorage.storedToken2;
   }
-  console.log(token);
-  token = {
-    "token": "dinner"
-  }
+
+  fetch('http://localhost:3000/api/events').then(res => {
+    if (res.ok) {
+        res.json().then(ev => events = ev.filter(event => event.open));
+    }
+  });
 
   setupServiceWorker();
   window.addEventListener("DOMContentLoaded", onDOMContentLoad);
@@ -87,10 +95,11 @@ function onDOMContentLoad() {
     scanner.style.display = 'block';
 
     QRReader.scan(result => {
+      console.log(result);
       let fetchData = { 
         method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ token: token })
+        body: JSON.stringify({ 'token': result })
       }
       copiedText = result;
       textBox.value = result;
@@ -103,13 +112,59 @@ function onDOMContentLoad() {
       dialogOverlayElement.classList.remove('app__dialog--hide');
       fetch('http://localhost:3000/auth/eventcode', fetchData).then(res => {
         if (res.ok) {
-            this.tokenValid = true;
-            window.localStorage.storedToken2 = this.token;
+            tokenValid = true;
+            window.localStorage.storedToken2 = token;
+            console.log(res);
         } else {
-            this.authError = 'Invalid token';
+            authError = 'Invalid token';
         }
       })
     });
+  }
+
+  function setEvent(eventId) {
+    selectedEvent = eventId;
+    scanning = true;
+  }
+
+  function displayAttendee(attendeeId) {
+    var setInvalidQr = () => qrData = { invalid: true };
+    fetch(`http://localhost:3000/api/events/${selectedEvent}/admitted/${attendeeId}`, {
+        headers: tokenHeader
+    }).then(res => {
+        if (res.ok) {
+            res.json().then(el => qrData = el);
+        } else {
+            setInvalidQr();
+        }
+    }).catch(err => setInvalidQr());
+  }
+
+  function admitAttendee() {
+    if (!qrData.invalid) {
+        fetch(`http://localhost:3000/api/events/${selectedEvent}/admit/${qrData._id}`, {
+            headers: tokenHeader
+        }).then(res => {
+            res.json().then(console.log);
+        });
+    }
+    returnToScan();
+  }
+
+  function unadmitAttendee() {
+    if (!qrData.invalid) {
+        fetch(`http://localhost:3000/api/events/${selectedEvent}/unadmit/${qrData._id}`, {
+            headers: tokenHeader
+        }).then(res => {
+            res.json().then(console.log);
+        });
+    }
+    returnToScan();
+  }
+
+  function returnToScan() {
+    qrData = null;
+    scanning = true;
   }
 
   function hideDialog() {
