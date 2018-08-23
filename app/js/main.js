@@ -6,6 +6,7 @@ import isURL from 'is-url';
 let selectedEvent = null;
 let scanning = false;
 let qrData = null;
+let invalid = false;
 let events = [];
 let token = "";
 let tokenValid = false;
@@ -119,6 +120,13 @@ function onDOMContentLoad() {
             authError = 'Invalid token';
         }
       })
+      setEvent('testing');
+      displayAttendee('ok');
+      if (!invalid){
+        admitAttendee();
+      } else {
+        unadmitAttendee();
+      };
     });
   }
 
@@ -129,11 +137,9 @@ function onDOMContentLoad() {
 
   function displayAttendee(attendeeId) {
     var setInvalidQr = () => qrData = { invalid: true };
-    fetch(`http://localhost:3000/api/events/${selectedEvent}/admitted/${attendeeId}`, {
-        headers: tokenHeader
-    }).then(res => {
+    fetch(`https://reqres.in/api/users?page=2`).then(res => {
         if (res.ok) {
-            res.json().then(el => qrData = el);
+            res.json().then(el => qrData = el).then(() => console.log(qrData));
         } else {
             setInvalidQr();
         }
@@ -141,10 +147,12 @@ function onDOMContentLoad() {
   }
 
   function admitAttendee() {
+    console.log('admit');
     if (!qrData.invalid) {
         fetch(`http://localhost:3000/api/events/${selectedEvent}/admit/${qrData._id}`, {
             headers: tokenHeader
         }).then(res => {
+            res = { headers: admitted }
             res.json().then(console.log);
         });
     }
@@ -152,10 +160,12 @@ function onDOMContentLoad() {
   }
 
   function unadmitAttendee() {
+    console.log('unadmit');
     if (!qrData.invalid) {
         fetch(`http://localhost:3000/api/events/${selectedEvent}/unadmit/${qrData._id}`, {
             headers: tokenHeader
         }).then(res => {
+            res = { headers: unadmitted }
             res.json().then(console.log);
         });
     }
