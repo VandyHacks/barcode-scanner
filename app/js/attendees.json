@@ -1,0 +1,9 @@
+{
+  "1234": {
+    "name": "Josh",
+    "email": "josh@vanderbilt.edu",
+    "school": "Vanderbilt",
+    "confirmed": "yes",
+    "admitted": "yes"
+  }
+}
