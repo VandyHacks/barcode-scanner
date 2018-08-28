@@ -111,15 +111,18 @@ function onDOMContentLoad() {
   };
 
   function showResult(res) {
+    console.log(res);
     textBox.innerHTML = '';
-    let info = [res.status.name,res.email,res.__v, res.status.confirmed, res.admittedToEvent];
+    let info = [res.status.name,res.email,res.__v, res.status.confirmed, res.status.admitted];
     let props = ['Name: ', 'Email: ', 'School: ', 'Confirmed: ', 'Admitted: '];
     if (!invalid) {
+      copiedText = qrData;
       info.forEach(element => {
         const tag = '<p>' + props.shift() + element + '</p>';
         textBox.innerHTML += tag;
       });
     } else {
+      copiedText = 'Not valid attendee';
       textBox.innerHTML = 'Not valid attendee';
     }
     scanner.style.display = 'none';
@@ -128,6 +131,7 @@ function onDOMContentLoad() {
     }
     dialogElement.classList.remove('app__dialog--hide');
     dialogOverlayElement.classList.remove('app__dialog--hide');
+    document.getElementById('unadmit').onclick(unadmitAttendee);
   }
 
   function scan() {
@@ -159,38 +163,35 @@ function onDOMContentLoad() {
   }
 
   function displayAttendee(callback) {
-    let setInvalidQr = () => invalid = true;
+    var setInvalidQr = () => invalid = true;
     fetch(`http://localhost:3000/api/events/5b817a84f4ca5c4f4201ab15/admitted/5b819556fbea8e595d29170d`).then(res => {
         if (res.ok) {
-            console.log('ok');
-            res.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData));
+            res.json().then(el => qrData = el);
         } else {
-            console.log('what');
-            setInvalidQr().then((() => callback(qrData)));
+            setInvalidQr();
         }
-        // checkAdmit();
-    });
-    //.catch(err => setInvalidQr());
+        callback(res);
+        checkAdmit(res);
+    }).catch(err => setInvalidQr());
   }
 
   function admitAttendee() {
     console.log('admit');
-    if (!invalid) {
-      console.log('okkk');
+    if (!qrData.invalid) {
+      console.log('ok');
         fetch(`http://localhost:3000/api/events/5b817a84f4ca5c4f4201ab15/admit/5b819556fbea8e595d29170d`, {
             headers: tokenHeader
-        })
-        // .then(res => {
-        //     console.log(res.json());
-        //     res = { headers: 'admitted' }
-        // });
+        }).then(res => {
+            res = { headers: admitted }
+            // res.json().then(console.log);
+        });
     }
     returnToScan();
   }
 
   function unadmitAttendee() {
     console.log('unadmit');
-    if (!invalid) {
+    if (!qrData.invalid) {
         fetch(`http://localhost:3000/api/events/5b817a84f4ca5c4f4201ab15/unadmit/5b819556fbea8e595d29170d`, {
             headers: tokenHeader
         }).then(res => {
