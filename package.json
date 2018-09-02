@@ -2,7 +2,7 @@
   "name": "barcodeScanner",
   "version": "3.0.0",
   "engines": {
-    "node": "^10.3.0",
+    "node": "^10.3.0"
   },
   "dependencies": {
     "is-url": "^1.2.2"
