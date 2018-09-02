@@ -32,7 +32,7 @@ function main() {
     token = window.localStorage.storedToken2;
   }
 
-  fetch('http://localhost:3000/auth/eventcode').then(res => {
+  fetch('https://vhs-regi.herokuapp.com/auth/eventcode').then(res => {
     if (res.ok) {
         res.json().then(ev => events = ev.filter(event => event.open));
     }
@@ -140,7 +140,7 @@ function onDOMContentLoad() {
         headers: new Headers({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ 'token': 'dinner', 'body':'stuff'})
       }
-      fetch('http://localhost:3000/auth/eventcode/', fetchData).then(res => {
+      fetch('https://vhs-regi.herokuapp.com/auth/eventcode/', fetchData).then(res => {
         if (res.ok) {
             tokenValid = true;
             window.localStorage.storedToken2 = token;
@@ -160,7 +160,7 @@ function onDOMContentLoad() {
 
   function displayAttendee(callback) {
     let setInvalidQr = () => invalid = true;
-    fetch(`http://localhost:3000/api/events/5b817a84f4ca5c4f4201ab15/admitted/5b819556fbea8e595d29170d`).then(res => {
+    fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admitted/5b74924e839afd513227bbc3`).then(res => {
         if (res.ok) {
             console.log('ok');
             res.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData));
@@ -177,7 +177,7 @@ function onDOMContentLoad() {
     console.log('admit');
     if (!invalid) {
       console.log('okkk');
-        fetch(`http://localhost:3000/api/events/5b817a84f4ca5c4f4201ab15/admit/5b819556fbea8e595d29170d`, {
+        fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admit/5b74924e839afd513227bbc3`, {
             headers: tokenHeader
         })
         // .then(res => {
@@ -191,7 +191,7 @@ function onDOMContentLoad() {
   function unadmitAttendee() {
     console.log('unadmit');
     if (!invalid) {
-        fetch(`http://localhost:3000/api/events/5b817a84f4ca5c4f4201ab15/unadmit/5b819556fbea8e595d29170d`, {
+        fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/unadmit/5b74924e839afd513227bbc3`, {
             headers: tokenHeader
         }).then(res => {
             res = { headers: unadmitted }
