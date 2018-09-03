@@ -27,7 +27,7 @@
     "webpack-dev-server": "2.2.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot --inline --open",
+    "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --hot --inline --open",
     "deploy": "npm run build && bash deploy.sh",
     "build": "cross-env NODE_ENV=production webpack -p --config webpack.config.js"
   }
