@@ -5,6 +5,7 @@
     "node": "10.3.0"
   },
   "dependencies": {
+    "express": "^4.16.3",
     "is-url": "^1.2.2"
   },
   "devDependencies": {
@@ -27,7 +28,7 @@
     "webpack-dev-server": "2.2.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot --inline --open",
+    "start": "node app/server.js",
     "deploy": "npm run build && bash deploy.sh",
     "build": "cross-env NODE_ENV=production webpack -p --config webpack.config.js",
     "heroku-postbuild": "webpack -p --config ./webpack.config.js --progress"
