@@ -1,14 +1,15 @@
-const express = require('express');
-const path = require('path');
-const port = process.env.PORT || 8080;
-const app = express();
+const path = require('path')
+const express = require('express')
 
-// the __dirname is the current directory from where the script is running
-app.use(express.static(__dirname + "/dist"));
+module.exports = {
+  app: function () {
+    const app = express()
+    const indexPath = path.join(__dirname, '/index.html')
+    const publicPath = express.static(path.join(__dirname, '../app'))
 
-// send the user to index html page inspite of the url
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(__dirname, 'index.html'));
-});
+    app.use('/public', publicPath)
+    app.get('/', function (_, res) { res.sendFile(indexPath) })
 
-app.listen(port);
+    return app
+  }
+}
