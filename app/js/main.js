@@ -137,7 +137,7 @@ function onDOMContentLoad() {
       let fetchData = { 
         method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify({ 'token': result.token, 'data': result.data})
+        body: JSON.stringify(result)
       }
       fetch('https://vhs-regi.herokuapp.com/auth/eventcode/', fetchData).then(res => {
         if (res.ok) {
