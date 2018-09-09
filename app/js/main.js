@@ -141,6 +141,8 @@ function onDOMContentLoad() {
       }
       fetch('https://vhs-regi.herokuapp.com/auth/eventcode/', fetchData).then(res => {
         if (res.ok) {
+            console.log(res);
+            console.log(res.data);
             tokenValid = true;
             window.localStorage.storedToken2 = token;
             displayAttendee(showResult, res);
@@ -159,7 +161,7 @@ function onDOMContentLoad() {
 
   function displayAttendee(callback, res) {
     let setInvalidQr = () => invalid = true;
-    console.log(res);
+    console.log(res.data);
     fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admitted/'${res.data}'`).then(resp => {
         if (resp.ok) {
             resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
