@@ -122,7 +122,6 @@ function onDOMContentLoad() {
     } else {
       textBox.innerHTML = 'Not valid attendee';
     }
-    scanner.style.display = 'none';
     if (isURL(result)) {
       dialogOpenButton.style.display = 'inline-block';
     }
@@ -132,9 +131,9 @@ function onDOMContentLoad() {
 
   function scan() {
     scanner.style.display = 'block';
-    setEvent('testing');
+    setEvent();
     QRReader.scan(result => {
-
+      scanner.style.display = 'none';
       let fetchData = { 
         method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
