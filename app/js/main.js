@@ -111,6 +111,7 @@ function onDOMContentLoad() {
   };
 
   function showResult(res) {
+    scanner.style.display = 'none';
     textBox.innerHTML = '';
     let info = [res.status.name,res.email,res.__v, res.status.confirmed, res.admittedToEvent];
     let props = ['Name: ', 'Email: ', 'School: ', 'Confirmed: ', 'Admitted: '];
