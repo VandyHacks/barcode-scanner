@@ -141,11 +141,11 @@ function onDOMContentLoad() {
       }
       fetch('https://vhs-regi.herokuapp.com/auth/eventcode/', fetchData).then(res => {
         if (res.ok) {
-            console.log(res);
-            console.log(res.data);
+            console.log(result);
+            console.log(result.data);
             tokenValid = true;
             window.localStorage.storedToken2 = token;
-            displayAttendee(showResult, res);
+            displayAttendee(showResult, result);
         } else {
             console.log('invalid token');
             authError = 'Invalid token';
