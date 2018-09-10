@@ -134,6 +134,7 @@ function onDOMContentLoad() {
     setEvent();
     QRReader.scan(result => {
       scanner.style.display = 'none';
+      console.log(result);
       let fetchData = { 
         method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
