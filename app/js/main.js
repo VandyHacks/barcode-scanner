@@ -137,8 +137,7 @@ function onDOMContentLoad() {
       console.log(result);
       let fetchData = { 
         method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' }),
-        body: JSON.stringify(result)
+        headers: new Headers({ 'Content-Type': 'application/json' })
       }
       console.log(result);
 
@@ -164,7 +163,7 @@ function onDOMContentLoad() {
 
   function displayAttendee(callback, res) {
     let setInvalidQr = () => invalid = true;
-    console.log(res.data);
+    console.log(res);
     fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admitted/'${res}'`).then(resp => {
         if (resp.ok) {
             resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
