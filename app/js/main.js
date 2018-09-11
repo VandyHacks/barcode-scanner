@@ -142,7 +142,7 @@ function onDOMContentLoad() {
       }
       console.log(result);
 
-      fetch('https://vhs-regi.herokuapp.com/auth/eventcode/', fetchData).then(res => {
+      fetch('https://vhs-regi.herokuapp.com/auth/eventcode/').then(res => {
         if (res.ok) {
             console.log(result);
             console.log(result.body);
