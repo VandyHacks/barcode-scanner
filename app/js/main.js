@@ -137,7 +137,8 @@ function onDOMContentLoad() {
       console.log(result);
       let fetchData = { 
         method: 'POST',
-        headers: new Headers({ 'Content-Type': 'application/json' })
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ 'token': 'dinner', 'body':'stuff'})
       }
       console.log(result);
 
