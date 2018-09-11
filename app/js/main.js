@@ -140,12 +140,12 @@ function onDOMContentLoad() {
         headers: new Headers({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(result)
       }
-      console.log(fetchData);
+      console.log(result);
 
       fetch('https://vhs-regi.herokuapp.com/auth/eventcode/', fetchData).then(res => {
         if (res.ok) {
             console.log(result);
-            console.log(result.data);
+            console.log(result.body);
             tokenValid = true;
             window.localStorage.storedToken2 = token;
             displayAttendee(showResult, result);
@@ -165,7 +165,7 @@ function onDOMContentLoad() {
   function displayAttendee(callback, res) {
     let setInvalidQr = () => invalid = true;
     console.log(res.data);
-    fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admitted/'${res.data}'`).then(resp => {
+    fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admitted/'${res}'`).then(resp => {
         if (resp.ok) {
             resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
         } else {
@@ -178,7 +178,7 @@ function onDOMContentLoad() {
 
   function admitAttendee(id) {
     if (!invalid) {
-        fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admit/'${id.data}'`, {
+        fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admit/'${id}'`, {
             headers: tokenHeader
         })
         // .then(res => {
@@ -192,7 +192,7 @@ function onDOMContentLoad() {
   function unadmitAttendee(id) {
     console.log('unadmit');
     if (!invalid) {
-        fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/unadmit/'${id.data}'`, {
+        fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/unadmit/'${id}'`, {
             headers: tokenHeader
         }).then(res => {
             res = { headers: unadmitted }
