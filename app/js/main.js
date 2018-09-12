@@ -81,7 +81,7 @@ function onDOMContentLoad() {
     // Set camera overlay size
     setTimeout(() => { 
       setCameraOverlay();
-      scan();
+      // scan();
     }, 1000);
   });
   // dialogCloseButton.addEventListener('click', hideDialog, false);
@@ -130,12 +130,14 @@ function onDOMContentLoad() {
   }
 
   function checkPasscode() {
+    console('check');
     document.getElementById("checker").addEventListener("keydown", e => {
       if (!e) { let e = window.event; }
       e.preventDefault(); // sometimes useful
       const code = document.getElementById("checker").value;
       // Enter is pressed
-      if (e.keyCode === 13 && code === 'code') { 
+      if (e.keyCode === 13 && code === 'code') {
+        console.log('scan'); 
         scan();
       } else {
         document.getElementById("checker").innerText("Try again");
