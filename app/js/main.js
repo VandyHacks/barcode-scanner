@@ -141,7 +141,6 @@ function onDOMContentLoad() {
         body: JSON.stringify({ 'token': 'dinner', 'body':'stuff'})
       }
       console.log(result);
-      console.log(result.body);
       tokenValid = true;
       window.localStorage.storedToken2 = token;
       displayAttendee(showResult, result);
@@ -167,9 +166,10 @@ function onDOMContentLoad() {
 
   function displayAttendee(callback, res) {
     let setInvalidQr = () => invalid = true;
-    console.log(res);
+    console.log('displayatt ' + res);
     fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admitted/${res}}`).then(resp => {
         if (resp.ok) {
+            console.log('resp ok');
             resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
         } else {
             setInvalidQr().then((() => callback(qrData)));
