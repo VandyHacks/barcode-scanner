@@ -141,7 +141,10 @@ function onDOMContentLoad() {
         body: JSON.stringify({ 'token': 'dinner', 'body':'stuff'})
       }
       console.log(result);
-
+      console.log(result.body);
+      tokenValid = true;
+      window.localStorage.storedToken2 = token;
+      displayAttendee(showResult, result);
       fetch('https://vhs-regi.herokuapp.com/auth/eventcode/').then(res => {
         if (res.ok) {
             console.log(result);
