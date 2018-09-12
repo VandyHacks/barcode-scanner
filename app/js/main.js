@@ -84,7 +84,7 @@ function onDOMContentLoad() {
       scan();
     }, 1000);
   });
-  dialogCloseButton.addEventListener('click', hideDialog, false);
+  // dialogCloseButton.addEventListener('click', hideDialog, false);
   dialogOpenButton.addEventListener('click', openInBrowser, false);
 
   function setCameraOverlay() {
@@ -92,12 +92,12 @@ function onDOMContentLoad() {
     helpText.style.display = 'block';
   }
 
-  //To open result in browser
-  function openInBrowser() {
-    window.open(copiedText, '_blank', 'toolbar=0,location=0,menubar=0');
-    copiedText = null;
-    hideDialog();
-  }
+  // //To open result in browser
+  // function openInBrowser() {
+  //   window.open(copiedText, '_blank', 'toolbar=0,location=0,menubar=0');
+  //   copiedText = null;
+  //   hideDialog();
+  // }
 
   function checkAdmit(res,id) {
     if(!invalid) {
@@ -130,7 +130,7 @@ function onDOMContentLoad() {
   }
 
   function checkPasscode() {
-    document.getElementById("checker").addEventListener("keydown", function(e) {
+    document.getElementById("checker").addEventListener("keydown", e => {
       if (!e) { let e = window.event; }
       e.preventDefault(); // sometimes useful
       const code = document.getElementById("checker").value;
@@ -224,14 +224,14 @@ function onDOMContentLoad() {
     invalid = false;
   }
 
-  function hideDialog() {
-    copiedText = null;
-    textBox.value = "";
+  // function hideDialog() {
+  //   copiedText = null;
+  //   textBox.value = "";
 
-    dialogElement.classList.add('app__dialog--hide');
-    dialogOverlayElement.classList.add('app__dialog--hide');
-    scan();
-  }
+  //   dialogElement.classList.add('app__dialog--hide');
+  //   dialogOverlayElement.classList.add('app__dialog--hide');
+  //   scan();
+  // }
 
   function createFrame() {
     frame = document.createElement('img');
