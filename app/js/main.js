@@ -81,6 +81,7 @@ function onDOMContentLoad() {
     // Set camera overlay size
     setTimeout(() => { 
       setCameraOverlay();
+      checkPasscode();
       // scan();
     }, 1000);
   });
