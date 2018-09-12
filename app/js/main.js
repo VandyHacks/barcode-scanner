@@ -129,6 +129,20 @@ function onDOMContentLoad() {
     dialogOverlayElement.classList.remove('app__dialog--hide');
   }
 
+  function checkPasscode() {
+    document.getElementById("checker").addEventListener("keydown", function(e) {
+      if (!e) { let e = window.event; }
+      e.preventDefault(); // sometimes useful
+      const code = document.getElementById("checker").value;
+      // Enter is pressed
+      if (e.keyCode === 13 && code === 'code') { 
+        scan();
+      } else {
+        document.getElementById("checker").innerText("Try again");
+      }
+    }, false);
+  }
+
   function scan() {
     scanner.style.display = 'block';
     setEvent();
@@ -262,7 +276,7 @@ function onDOMContentLoad() {
         frame.src = URL.createObjectURL(event.target.files[0]);
         scanner.style.display = 'block';
         window.appOverlay.style.borderColor = '#212121';
-        scan();
+        checkPasscode();
       }
     });
   }
