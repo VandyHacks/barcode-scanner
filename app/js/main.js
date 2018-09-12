@@ -145,18 +145,18 @@ function onDOMContentLoad() {
       tokenValid = true;
       window.localStorage.storedToken2 = token;
       displayAttendee(showResult, result);
-      fetch('https://vhs-regi.herokuapp.com/auth/eventcode/').then(res => {
-        if (res.ok) {
-            console.log(result);
-            console.log(result.body);
-            tokenValid = true;
-            window.localStorage.storedToken2 = token;
-            displayAttendee(showResult, result);
-        } else {
-            console.log('invalid token');
-            authError = 'Invalid token';
-        }
-      })
+      // fetch('https://vhs-regi.herokuapp.com/auth/eventcode/').then(res => {
+      //   if (res.ok) {
+      //       console.log(result);
+      //       console.log(result.body);
+      //       tokenValid = true;
+      //       window.localStorage.storedToken2 = token;
+      //       displayAttendee(showResult, result);
+      //   } else {
+      //       console.log('invalid token');
+      //       authError = 'Invalid token';
+      //   }
+      // })
     });
   }
 
