@@ -167,7 +167,7 @@ function onDOMContentLoad() {
   function displayAttendee(callback, res) {
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
-    fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admitted/${res}}`).then(resp => {
+    fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admitted/${res}`).then(resp => {
         if (resp.ok) {
             console.log('resp ok');
             resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
