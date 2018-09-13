@@ -21,6 +21,7 @@ function tokenHeader() {
 };
 
 main();
+checkPasscode();
 function main() {
   let fdata = {
       method: 'Get',
@@ -81,7 +82,7 @@ function onDOMContentLoad() {
     // Set camera overlay size
     setTimeout(() => { 
       setCameraOverlay();
-      checkPasscode();
+      //checkPasscode();
       // scan();
     }, 1000);
   });
@@ -279,7 +280,7 @@ function onDOMContentLoad() {
         frame.src = URL.createObjectURL(event.target.files[0]);
         scanner.style.display = 'block';
         window.appOverlay.style.borderColor = '#212121';
-        checkPasscode();
+        scan();
       }
     });
   }
