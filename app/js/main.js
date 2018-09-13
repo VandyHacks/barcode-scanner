@@ -162,7 +162,7 @@ function onDOMContentLoad() {
       tokenValid = true;
       window.localStorage.storedToken2 = token;
       displayAttendee(showResult, result);
-      // fetch('https://vhs-regi.herokuapp.com/auth/eventcode/').then(res => {
+      // fetch('https://apply.vandyhacks.org/auth/eventcode/').then(res => {
       //   if (res.ok) {
       //       console.log(result);
       //       console.log(result.body);
@@ -185,7 +185,7 @@ function onDOMContentLoad() {
   function displayAttendee(callback, res) {
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
-    fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admitted/${res}`).then(resp => {
+    fetch(`https://apply.vandyhacks.org/api/events/5b817a84f4ca5c4f4201ab15/admitted/${res}`).then(resp => {
         if (resp.ok) {
             console.log('resp ok');
             resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
@@ -199,7 +199,7 @@ function onDOMContentLoad() {
 
   function admitAttendee(id) {
     if (!invalid) {
-        fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/admit/${id}`, {
+        fetch(`https://apply.vandyhacks.org/api/events/5b817a84f4ca5c4f4201ab15/admit/${id}`, {
             headers: tokenHeader
         })
         // .then(res => {
@@ -213,7 +213,7 @@ function onDOMContentLoad() {
   function unadmitAttendee(id) {
     console.log('unadmit');
     if (!invalid) {
-        fetch(`https://vhs-regi.herokuapp.com/api/events/5b817a84f4ca5c4f4201ab15/unadmit/${id}`, {
+        fetch(`https://apply.vandyhacks.org/api/events/5b817a84f4ca5c4f4201ab15/unadmit/${id}`, {
             headers: tokenHeader
         }).then(res => {
             res = { headers: unadmitted }
