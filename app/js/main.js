@@ -143,7 +143,7 @@ function onDOMContentLoad() {
         console.log('scan'); 
         scan();
       } else {
-        document.getElementById("checker").innerText("Try again");
+        document.getElementById("checker").innerHTML("Try again");
       }
     }, false);
   }
