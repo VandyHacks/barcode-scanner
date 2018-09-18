@@ -132,8 +132,9 @@ function onDOMContentLoad() {
   }
 
   function checkPasscode() {
-    console('check');
+    console.log('check');
     document.getElementById("checker").addEventListener("keydown", e => {
+      console.log('check');
       if (!e) { let e = window.event; }
       e.preventDefault(); // sometimes useful
       const code = document.getElementById("checker").value;

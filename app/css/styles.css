@@ -381,12 +381,11 @@ video {
 }
 
 #check_container {
-  position: relative;
   z-index: 1000;
 }
 
 #checker {
   position: absolute;
-  left: 10%;
-  bottom: 10%;
+  left: 0;
+  bottom: 0;
 }
