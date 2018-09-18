@@ -382,7 +382,7 @@ video {
 
 #check_container {
   z-index: 1000;
-  width: 500px
+  width: 500px;
 }
 
 #checker {
@@ -394,4 +394,7 @@ video {
 #submitCheck {
   width: 100px;
   height: 150px;
+  position: absolute;
+  left: 0;
+  bottom: 0;
 }
