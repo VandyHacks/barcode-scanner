@@ -133,20 +133,28 @@ function onDOMContentLoad() {
 
   function checkPasscode() {
     console.log('check');
-    document.getElementById("checker").addEventListener("keydown", e => {
-      console.log('check');
-      if (!e) { let e = window.event; }
-      e.preventDefault(); // sometimes useful
-      let code = document.getElementById("checker").value;
-      console.log('code: ' + code);
-      // Enter is pressed
-      if (e.keyCode === 13 && code === 'code') {
-        console.log('scan'); 
+    // document.getElementById("checker").addEventListener("keydown", e => {
+    //   console.log('check');
+    //   if (!e) { let e = window.event; }
+    //   e.preventDefault(); // sometimes useful
+    //   let code = document.getElementById("checker").value;
+    //   console.log('code: ' + code);
+    //   // Enter is pressed
+    //   if (e.keyCode === 13) {
+    //     console.log('scan'); 
+    //     scan();
+    //   } else {
+    //     document.getElementById("checker").value = "Try again";
+    //   }
+    // }, false);
+    document.getElementById('submitCheck').onclick(() => {
+      if(document.getElementById('checker').value === 'code') {
         scan();
+        console.log('scan');
       } else {
-        document.getElementById("checker").value("Try again");
+        console.log('incorrect');
       }
-    }, false);
+    })
   }
 
   function scan() {
