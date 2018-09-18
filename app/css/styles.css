@@ -379,3 +379,14 @@ video {
   opacity: 0.9;
   transform: scale(0.98);
 }
+
+#check_container {
+  position: relative;
+  z-index: 1000;
+}
+
+#checker {
+  position: absolute;
+  left: 10%;
+  bottom: 10%;
+}
