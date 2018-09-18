@@ -137,13 +137,14 @@ function onDOMContentLoad() {
       console.log('check');
       if (!e) { let e = window.event; }
       e.preventDefault(); // sometimes useful
-      const code = document.getElementById("checker").value;
+      let code = document.getElementById("checker").value;
+      console.log('code: ' + code);
       // Enter is pressed
       if (e.keyCode === 13 && code === 'code') {
         console.log('scan'); 
         scan();
       } else {
-        document.getElementById("checker").innerHTML("Try again");
+        document.getElementById("checker").value("Try again");
       }
     }, false);
   }
