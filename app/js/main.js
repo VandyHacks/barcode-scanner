@@ -21,7 +21,7 @@ function tokenHeader() {
 };
 
 main();
-checkPasscode();
+// checkPasscode();
 function main() {
   let fdata = {
       method: 'Get',
