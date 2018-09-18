@@ -147,7 +147,7 @@ function onDOMContentLoad() {
     //     document.getElementById("checker").value = "Try again";
     //   }
     // }, false);
-    document.getElementById('submitCheck').addEventListener(() => {
+    document.getElementById('submitCheck').addEventListener('click',() => {
       if(document.getElementById('checker').value === 'code') {
         scan();
         console.log('scan');
