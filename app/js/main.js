@@ -187,6 +187,7 @@ function onDOMContentLoad() {
             console.log('resp ok');
             resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
         } else {
+            console.log('invalid id');
             setInvalidQr().then((() => callback(qrData)));
         }
         // checkAdmit();
