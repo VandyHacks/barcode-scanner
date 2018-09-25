@@ -101,13 +101,9 @@ function onDOMContentLoad() {
   //   hideDialog();
   // }
 
-  function checkAdmit(res,id) {
+  function checkAdmit(id) {
     if(!invalid) {
-      if(!res.status.admitted) {
-        admitAttendee(id);
-      } else {
-        unadmitAttendee(id);
-      }
+      admitAttendee(id);
     }
   };
 
@@ -181,7 +177,7 @@ function onDOMContentLoad() {
 
   function displayAttendee(callback, res) {
     console.log(res);
-    res.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
+    admitAttendee(res);
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
     fetch(`https://apply.vandyhacks.org/api/events/5ba688091834080020e18db8/admitted/${res}`).then(resp => {
