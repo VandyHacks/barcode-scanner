@@ -180,12 +180,14 @@ function onDOMContentLoad() {
   }
 
   function displayAttendee(callback, res) {
+    console.log(res);
+    res.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
     fetch(`https://apply.vandyhacks.org/api/events/5ba688091834080020e18db8/admitted/${res}`).then(resp => {
         if (resp.ok) {
             console.log('resp ok');
-            resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
+            // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
         } else {
             console.log('invalid id');
             setInvalidQr().then((() => callback(qrData)));
