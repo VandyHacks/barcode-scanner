@@ -2,40 +2,49 @@ import QRReader from './vendor/qrscan.js';
 import {snackbar} from './snackbar.js';
 import isURL from 'is-url';
 
-let selectedEvent = null;
+
 let scanning = false;
-let qrData = [];
-let invalid = false;
+let qrData = null;
 let events = [];
+let selectedEvent = null;
 let token = "";
 let tokenValid = false;
 let authError = null;
-let attendees = [];
 
 const EVENT_URL = 'https://apply.vandyhacks.org/api/events';
-let EVENT_ID = '5ba688091834080020e18db8';
 
 function tokenHeader() {
   return new Headers({
-      'x-event-secret': 'dinner',
+      'x-event-secret': this.token,
       'Content-Type': 'application/json'
   });
 };
 
-main();
-// checkPasscode();
-function main() {
-  let fdata = {
-      method: 'Get',
-      headers: new Headers({ 'Content-Type': 'application/json' })
+function setToken(){
+  if (!this.token) {
+    return;
   }
+    fetch('https://apply.vandyhacks.org/auth/eventcode/', {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ token: this.token })
+    }).then(res => {
+        if (res.ok) {
+            tokenValid = true;
+            window.localStorage.storedToken2 = this.token;
+        } else {
+            this.authError = 'Invalid token';
+        }
+    });
+}
 
+main();
+function main() {
   if (window.localStorage.storedToken2) {
-    tokenValid = true;
+   tokenValid = true;
     token = window.localStorage.storedToken2;
   }
-
-  fetch('https://apply.vandyhacks.org/auth/eventcode/').then(res => {
+  fetch('https://apply.vandyhacks.org/api/events').then(res => {
     if (res.ok) {
         res.json().then(ev => events = ev.filter(event => event.open));
     }
@@ -156,7 +165,7 @@ function onDOMContentLoad() {
       console.log(result);
       tokenValid = true;
       window.localStorage.storedToken2 = token;
-      displayAttendee(showResult, result);
+      displayAttendee(result);
       // fetch('https://apply.vandyhacks.org/auth/eventcode/').then(res => {
       //   if (res.ok) {
       //       console.log(result);
@@ -177,53 +186,44 @@ function onDOMContentLoad() {
     scanning = true;
   }
 
-  function displayAttendee(callback, res) {
-    console.log(res);
-    admitAttendee(res);
-    let setInvalidQr = () => invalid = true;
-    console.log('displayatt ' + res);
-    fetch(`${EVENT_URL}/${EVENT_ID}/admitted/${res}`).then(resp => {
-        if (resp.ok) {
-            console.log('resp ok');
-            // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
+  function displayAttendee(attendeeId) {
+    var setInvalidQr = () => this.qrData = { invalid: true };
+    fetch(`https://apply.vandyhacks.org/api/events/${this.selectedEvent}/admitted/${attendeeId}`, {
+        headers: this.tokenHeader
+    }).then(res => {
+        if (res.ok) {
+            res.json().then(el => this.qrData = el);
         } else {
-            console.log('invalid id');
-            setInvalidQr().then((() => callback(qrData)));
+            setInvalidQr();
         }
-        // checkAdmit();
-    });
-    //.catch(err => setInvalidQr());
+    }).catch(err => setInvalidQr());
   }
 
   function admitAttendee(id) {
-    if (!invalid) {
-        fetch(`${EVENT_URL}/${EVENT_ID}/admit/${id}`, {
-            headers: tokenHeader
-        })
-        // .then(res => {
-        //     console.log(res.json());
-        //     res = { headers: 'admitted' }
-        // });
-    }
-    returnToScan();
+    if (!this.qrData._id) {
+      fetch(`${EVENT_URL}/${selectedEvent}/admit/${this.qrData._id}`, {
+          headers: this.tokenHeader
+      }).then(res => {
+          res.json().then(console.log);
+      });
+  }
+    returnToScan(); 
   }
 
   function unadmitAttendee(id) {
-    console.log('unadmit');
-    if (!invalid) {
-        fetch(`${EVENT_URL}/${EVENT_ID}/unadmit/${id}`, {
-            headers: tokenHeader
-        }).then(res => {
-            res = { headers: unadmitted }
-        });
-    }
+    if (!this.qrData._id) {
+      fetch(`${EVENT_URL}/${selectedEvent}/unadmit/${this.qrData._id}`, {
+          headers: this.tokenHeader
+      }).then(res => {
+          res.json().then(console.log);
+      });
+  }
     returnToScan();
   }
 
   function returnToScan() {
     qrData = null;
     scanning = true;
-    invalid = false;
   }
 
   // function hideDialog() {
