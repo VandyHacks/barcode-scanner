@@ -12,6 +12,9 @@ let tokenValid = false;
 let authError = null;
 let attendees = [];
 
+const EVENT_URL = 'https://apply.vandyhacks.org/api/events';
+let EVENT_ID = '5ba688091834080020e18db8';
+
 function tokenHeader() {
   return new Headers({
       'x-event-secret': 'dinner',
@@ -179,7 +182,7 @@ function onDOMContentLoad() {
     admitAttendee(res);
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
-    fetch(`https://apply.vandyhacks.org/api/events/5ba688091834080020e18db8/admitted/${res}`).then(resp => {
+    fetch(`${EVENT_URL}/${EVENT_ID}/admitted/${res}`).then(resp => {
         if (resp.ok) {
             console.log('resp ok');
             // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
@@ -194,7 +197,7 @@ function onDOMContentLoad() {
 
   function admitAttendee(id) {
     if (!invalid) {
-        fetch(`https://apply.vandyhacks.org/api/events/5ba688091834080020e18db8/admit/${id}`, {
+        fetch(`${EVENT_URL}/${EVENT_ID}/admit/${id}`, {
             headers: tokenHeader
         })
         // .then(res => {
@@ -208,7 +211,7 @@ function onDOMContentLoad() {
   function unadmitAttendee(id) {
     console.log('unadmit');
     if (!invalid) {
-        fetch(`https://apply.vandyhacks.org/api/events/5ba688091834080020e18db8/unadmit/${id}`, {
+        fetch(`${EVENT_URL}/${EVENT_ID}/unadmit/${id}`, {
             headers: tokenHeader
         }).then(res => {
             res = { headers: unadmitted }
