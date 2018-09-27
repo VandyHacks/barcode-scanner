@@ -3,6 +3,15 @@ import {snackbar} from './snackbar.js';
 import styles from '../css/styles.css';
 import isURL from 'is-url';
 
+let scanning = false
+let qrData = null
+let events = []
+let selectedEvent = null
+let token = ""
+let tokenValid = false
+let authError = null
+
+
 main();
 function main() {
   setupServiceWorker();
@@ -27,6 +36,9 @@ function setupServiceWorker() {
 }
 
 function onDOMContentLoad() {
+
+  mounted();
+
   let copiedText;
   let frame;
   const selectPhotoButton = document.querySelector('.app__select-photos');
@@ -140,16 +152,17 @@ function onDOMContentLoad() {
   }
 }
 
-function mounted(){
+//*************** Old vue funcs *****************/
+let mounted = function () {
   if (window.localStorage.storedToken2) {
     this.tokenValid = true;
     this.token = window.localStorage.storedToken2;
-}
-fetch('https://apply.vandyhacks.org/api/events').then(res => {
-    if (res.ok) {
-        res.json().then(events => this.events = events.filter(event => event.open));
-    }
-});
+  }
+  fetch('https://apply.vandyhacks.org/api/events').then(res => {
+      if (res.ok) {
+          res.json().then(events => this.events = events.filter(event => event.open));
+      }
+  });
 }
 let tokenHeader = function () {
   return new Headers({
