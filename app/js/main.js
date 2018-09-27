@@ -139,3 +139,81 @@ function onDOMContentLoad() {
     });
   }
 }
+
+function mounted(){
+  if (window.localStorage.storedToken2) {
+    this.tokenValid = true;
+    this.token = window.localStorage.storedToken2;
+}
+fetch('https://apply.vandyhacks.org/api/events').then(res => {
+    if (res.ok) {
+        res.json().then(events => this.events = events.filter(event => event.open));
+    }
+});
+}
+let tokenHeader = function () {
+  return new Headers({
+      'x-event-secret': this.token,
+      'Content-Type': 'application/json'
+  });
+}
+let setToken = function () {
+  if (!this.token) {
+    return;
+  }
+    fetch('https://apply.vandyhacks.org/auth/eventcode/', {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ token: this.token })
+    }).then(res => {
+        if (res.ok) {
+            this.tokenValid = true;
+            window.localStorage.storedToken2 = this.token;
+        } else {
+            this.authError = 'Invalid token';
+        }
+    });
+}
+let setEvent = function (eventId) {
+    this.selectedEvent = eventId;
+    this.scanning = true;
+}
+let displayAttendee = function (attendeeId) {
+    var setInvalidQr = () => this.qrData = { invalid: true };
+    fetch(`https://apply.vandyhacks.org/api/events/${this.selectedEvent}/admitted/${attendeeId}`, {
+        headers: this.tokenHeader
+    }).then(res => {
+        if (res.ok) {
+            res.json().then(el => this.qrData = el);
+        } else {
+            setInvalidQr();
+        }
+    }).catch(err => setInvalidQr());
+}
+let admitAttendee = function () {
+    if (!this.qrData.invalid) {
+        fetch(`https://apply.vandyhacks.org/api/events/${this.selectedEvent}/admit/${this.qrData._id}`, {
+            headers: this.tokenHeader
+        }).then(res => {
+            res.json().then(console.log);
+        });
+    }
+    this.returnToScan();
+}
+let unadmitAttendee = function () {
+    if (!this.qrData.invalid) {
+        fetch(`https://apply.vandyhacks.org/api/events/${this.selectedEvent}/unadmit/${this.qrData._id}`, {
+            headers: this.tokenHeader
+        }).then(res => {
+            res.json().then(console.log);
+        });
+    }
+    this.returnToScan();
+}
+let returnToScan = function () {
+    this.qrData = null;
+    this.scanning = true;
+}
+let typeColor = function (type) {
+    return colorMap[type] || 'gray';
+}
