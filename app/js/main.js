@@ -1,6 +1,5 @@
 import QRReader from './vendor/qrscan.js';
 import {snackbar} from './snackbar.js';
-import styles from '../css/styles.css';
 import isURL from 'is-url';
 
 let selectedEvent = null;
@@ -33,7 +32,7 @@ function main() {
     token = window.localStorage.storedToken2;
   }
 
-  fetch('https://vhs-regi.herokuapp.com/auth/eventcode').then(res => {
+  fetch('https://apply.vandyhacks.org/auth/eventcode/').then(res => {
     if (res.ok) {
         res.json().then(ev => events = ev.filter(event => event.open));
     }
