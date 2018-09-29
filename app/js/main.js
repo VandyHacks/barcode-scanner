@@ -106,7 +106,7 @@ function onDOMContentLoad() {
     }, 1000);
   });
   // dialogCloseButton.addEventListener('click', hideDialog, false);
-  dialogOpenButton.addEventListener('click', openInBrowser, false);
+  // dialogOpenButton.addEventListener('click', openInBrowser, false);
 
   function setCameraOverlay() {
     window.appOverlay.style.borderStyle = 'solid';
