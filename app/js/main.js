@@ -29,6 +29,8 @@ function setToken() {
   if (!this.token) {
     return;
   }
+  console.log(this.token);
+  console.log("pls");
   fetch('https://apply.vandyhacks.org/auth/eventcode/', {
       method: 'POST',
       headers: new Headers({ 'Content-Type': 'application/json' }),
@@ -41,7 +43,6 @@ function setToken() {
           this.authError = 'Invalid token';
       }
   });
-  console.log(this.token);
 }
 function main() {
   setToken();
