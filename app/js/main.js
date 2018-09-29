@@ -17,18 +17,34 @@ let EVENT_ID = '5ba688091834080020e18db8';
 
 function tokenHeader() {
   return new Headers({
-      'x-event-secret': 'dinner',
+      'x-event-secret': this.token,
       'Content-Type': 'application/json'
   });
 };
 
 main();
 // checkPasscode();
-function main() {
-  let fdata = {
-      method: 'Get',
-      headers: new Headers({ 'Content-Type': 'application/json' })
+
+function setToken() {
+  if (!this.token) {
+    return;
   }
+  fetch('https://apply.vandyhacks.org/auth/eventcode/', {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: JSON.stringify({ token: this.token })
+  }).then(res => {
+      if (res.ok) {
+          this.tokenValid = true;
+          window.localStorage.storedToken2 = this.token;
+      } else {
+          this.authError = 'Invalid token';
+      }
+  });
+  console.log(this.token);
+}
+function main() {
+  setToken();
 
   if (window.localStorage.storedToken2) {
     tokenValid = true;
@@ -103,11 +119,6 @@ function onDOMContentLoad() {
   //   hideDialog();
   // }
 
-  function checkAdmit(id) {
-    if(!invalid) {
-      admitAttendee(id);
-    }
-  };
 
   function showResult(res) {
     scanner.style.display = 'none';
@@ -133,7 +144,7 @@ function onDOMContentLoad() {
     console.log('check');
 
     document.getElementById('submitCheck').addEventListener('click',() => {
-      if(document.getElementById('checker').value === 'code') {
+      if(document.getElementById('checker').value === this.token) {
         scan();
         console.log('scan');
       } else {
@@ -147,7 +158,6 @@ function onDOMContentLoad() {
     setEvent();
     QRReader.scan(result => {
       scanner.style.display = 'none';
-      console.log(result);
       let fetchData = { 
         method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
@@ -157,18 +167,18 @@ function onDOMContentLoad() {
       tokenValid = true;
       window.localStorage.storedToken2 = token;
       displayAttendee(showResult, result);
-      // fetch('https://apply.vandyhacks.org/auth/eventcode/').then(res => {
-      //   if (res.ok) {
-      //       console.log(result);
-      //       console.log(result.body);
-      //       tokenValid = true;
-      //       window.localStorage.storedToken2 = token;
-      //       displayAttendee(showResult, result);
-      //   } else {
-      //       console.log('invalid token');
-      //       authError = 'Invalid token';
-      //   }
-      // })
+      fetch('https://apply.vandyhacks.org/auth/eventcode/', {
+          method: 'POST',
+          headers: new Headers({ 'Content-Type': 'application/json' }),
+          body: JSON.stringify({ token: this.token })
+      }).then(res => {
+          if (res.ok) {
+              this.tokenValid = true;
+              window.localStorage.storedToken2 = this.token;
+          } else {
+              this.authError = 'Invalid token';
+          }
+      });
     });
   }
 
