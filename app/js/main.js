@@ -25,28 +25,7 @@ function tokenHeader() {
 main();
 // checkPasscode();
 
-function setToken() {
-  if (!token) {
-    return;
-  }
-  console.log(token);
-  console.log("pls");
-  fetch('https://apply.vandyhacks.org/auth/eventcode/', {
-      method: 'POST',
-      headers: new Headers({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ token: token })
-  }).then(res => {
-      if (res.ok) {
-          tokenValid = true;
-          window.localStorage.storedToken2 = token;
-      } else {
-          authError = 'Invalid token';
-      }
-  });
-}
 function main() {
-  setToken();
-
   if (window.localStorage.storedToken2) {
     tokenValid = true;
     token = window.localStorage.storedToken2;
@@ -102,6 +81,7 @@ function onDOMContentLoad() {
     setTimeout(() => { 
       setCameraOverlay();
       checkPasscode();
+      setToken();
       // scan();
     }, 1000);
   });
@@ -168,18 +148,26 @@ function onDOMContentLoad() {
       tokenValid = true;
       window.localStorage.storedToken2 = token;
       displayAttendee(showResult, result);
-      fetch('https://apply.vandyhacks.org/auth/eventcode/', {
-          method: 'POST',
-          headers: new Headers({ 'Content-Type': 'application/json' }),
-          body: JSON.stringify({ token: token })
-      }).then(res => {
-          if (res.ok) {
-              tokenValid = true;
-              window.localStorage.storedToken2 = token;
-          } else {
-              authError = 'Invalid token';
-          }
-      });
+    });
+  }
+
+  function setToken() {
+    if (!token) {
+      return;
+    }
+    console.log(token);
+    console.log("pls");
+    fetch('https://apply.vandyhacks.org/auth/eventcode/', {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ token: token })
+    }).then(res => {
+        if (res.ok) {
+            tokenValid = true;
+            window.localStorage.storedToken2 = token;
+        } else {
+            authError = 'Invalid token';
+        }
     });
   }
 
