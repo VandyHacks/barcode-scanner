@@ -26,16 +26,19 @@ main();
 // checkPasscode();
 
 function main() {
+  console.log(1);
   if (window.localStorage.storedToken2) {
     tokenValid = true;
     token = window.localStorage.storedToken2;
   }
+  console.log(2);
 
   fetch('https://apply.vandyhacks.org/auth/eventcode/').then(res => {
     if (res.ok) {
         res.json().then(ev => events = ev.filter(event => event.open));
     }
   });
+  console.log(3);
 
   setupServiceWorker();
   window.addEventListener("DOMContentLoaded", onDOMContentLoad);
@@ -76,6 +79,7 @@ function onDOMContentLoad() {
   // Setup event listeners
   window.addEventListener('load', (event) => {
     QRReader.init("#cam");
+    console.log(4);
 
     // Set camera overlay size
     setTimeout(() => { 
