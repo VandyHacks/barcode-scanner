@@ -17,7 +17,7 @@ let EVENT_ID = '5ba688091834080020e18db8';
 
 function tokenHeader() {
   return new Headers({
-      'x-event-secret': this.token,
+      'x-event-secret': token,
       'Content-Type': 'application/json'
   });
 };
@@ -26,21 +26,21 @@ main();
 // checkPasscode();
 
 function setToken() {
-  if (!this.token) {
+  if (!token) {
     return;
   }
-  console.log(this.token);
+  console.log(token);
   console.log("pls");
   fetch('https://apply.vandyhacks.org/auth/eventcode/', {
       method: 'POST',
       headers: new Headers({ 'Content-Type': 'application/json' }),
-      body: JSON.stringify({ token: this.token })
+      body: JSON.stringify({ token: token })
   }).then(res => {
       if (res.ok) {
-          this.tokenValid = true;
-          window.localStorage.storedToken2 = this.token;
+          tokenValid = true;
+          window.localStorage.storedToken2 = token;
       } else {
-          this.authError = 'Invalid token';
+          authError = 'Invalid token';
       }
   });
 }
@@ -145,7 +145,7 @@ function onDOMContentLoad() {
     console.log('check');
 
     document.getElementById('submitCheck').addEventListener('click',() => {
-      if(document.getElementById('checker').value === this.token) {
+      if(document.getElementById('checker').value === token) {
         scan();
         console.log('scan');
       } else {
@@ -171,13 +171,13 @@ function onDOMContentLoad() {
       fetch('https://apply.vandyhacks.org/auth/eventcode/', {
           method: 'POST',
           headers: new Headers({ 'Content-Type': 'application/json' }),
-          body: JSON.stringify({ token: this.token })
+          body: JSON.stringify({ token: token })
       }).then(res => {
           if (res.ok) {
-              this.tokenValid = true;
-              window.localStorage.storedToken2 = this.token;
+              tokenValid = true;
+              window.localStorage.storedToken2 = token;
           } else {
-              this.authError = 'Invalid token';
+              authError = 'Invalid token';
           }
       });
     });
