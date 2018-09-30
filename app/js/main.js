@@ -109,7 +109,7 @@ function onDOMContentLoad() {
 
   function showResult(res) {
     console.log('asdasd');
-    console.log(res.profile);
+    console.log(res);
 
     scanner.style.display = 'none';
     textBox.innerHTML = '';
