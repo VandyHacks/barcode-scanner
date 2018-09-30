@@ -197,7 +197,7 @@ function onDOMContentLoad() {
         }
         // checkAdmit();
     }).then(() => {
-        callback(d;
+        callback(d);
     })
     //.catch(err => setInvalidQr());
   }
