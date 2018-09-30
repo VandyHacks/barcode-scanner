@@ -195,7 +195,7 @@ function onDOMContentLoad() {
         }
         // checkAdmit();
     }).then(() => {
-        callback(res);
+        callback(resp.json());
     })
     //.catch(err => setInvalidQr());
   }
