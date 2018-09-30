@@ -109,7 +109,7 @@ function onDOMContentLoad() {
 
   function showResult(res) {
     console.log('asdasd');
-    console.log(res);
+    console.log(res.profile);
 
     scanner.style.display = 'none';
     textBox.innerHTML = '';
@@ -189,18 +189,18 @@ function onDOMContentLoad() {
       headers: header
     }).then(resp => {
         if (resp.ok) {
-            d = resp;
-            console.log('resp is ' + resp);
+            resp.json().then(data => ({
+              data: data,
+              status: resp.status
+            })).then(res => { 
+              setTimeout(callback(res), 3000); 
+            });
             // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
         } else {
             console.log('invalid id');
             setInvalidQr().then((() => callback(qrData)));
         }
         // checkAdmit();
-    }).then(() => {
-        console.log('d');
-        console.log(d);
-        setTimeout(callback(d.json()), 5000);
     })
     //.catch(err => setInvalidQr());
   }
