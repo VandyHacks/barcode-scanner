@@ -90,7 +90,7 @@ function onDOMContentLoad() {
       // scan();
     }, 1000);
   });
-  // dialogCloseButton.addEventListener('click', hideDialog, false);
+  dialogCloseButton.addEventListener('click', hideDialog, false);
   // dialogOpenButton.addEventListener('click', openInBrowser, false);
 
   function setCameraOverlay() {
@@ -230,14 +230,12 @@ function onDOMContentLoad() {
     invalid = false;
   }
 
-  // function hideDialog() {
-  //   copiedText = null;
-  //   textBox.value = "";
-
-  //   dialogElement.classList.add('app__dialog--hide');
-  //   dialogOverlayElement.classList.add('app__dialog--hide');
-  //   scan();
-  // }
+  function hideDialog() {
+    copiedText = null;
+    dialogElement.classList.add('app__dialog--hide');
+    dialogOverlayElement.classList.add('app__dialog--hide');
+    scan();
+  }
 
   function createFrame() {
     frame = document.createElement('img');
