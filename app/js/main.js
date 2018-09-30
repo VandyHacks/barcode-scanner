@@ -131,7 +131,7 @@ function onDOMContentLoad() {
 
     document.getElementById('submitCheck').addEventListener('click',() => {
       token = document.getElementById('checker').value;
-      console.log(token);
+      console.log(process.env.API_SECRET);
       if(document.getElementById('checker').value === process.env.API_SECRET) {
         scan();
         console.log('scan');
