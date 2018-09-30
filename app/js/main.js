@@ -189,7 +189,6 @@ function onDOMContentLoad() {
       headers: header
     }).then(resp => {
         if (resp.ok) {
-            d = resp;
             console.log('resp is ' + resp);
             // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
         } else {
@@ -197,8 +196,9 @@ function onDOMContentLoad() {
             setInvalidQr().then((() => callback(qrData)));
         }
         // checkAdmit();
-    }).then(() => {
-        setTimeout(callback(d.json()), 2000);
+    }).then(resp => {
+        d = await resp.json();
+        callback(d);
     })
     //.catch(err => setInvalidQr());
   }
