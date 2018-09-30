@@ -178,6 +178,7 @@ function onDOMContentLoad() {
 
   function displayAttendee(callback, res) {
     const header = tokenHeader();
+    let d;
     admitAttendee(res);
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
@@ -185,15 +186,17 @@ function onDOMContentLoad() {
       headers: header
     }).then(resp => {
         if (resp.ok) {
+            d = resp;
             console.log('resp is ' + resp);
-            callback(resp);
             // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
         } else {
             console.log('invalid id');
             setInvalidQr().then((() => callback(qrData)));
         }
         // checkAdmit();
-    });
+    }).then(() => {
+        callback(d);
+    })
     //.catch(err => setInvalidQr());
   }
 
