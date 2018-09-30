@@ -198,7 +198,7 @@ function onDOMContentLoad() {
         }
         // checkAdmit();
     }).then(() => {
-        setTimeout(callback(d.json()), 1000);
+        setTimeout(callback(d.json()), 2000);
     })
     //.catch(err => setInvalidQr());
   }
