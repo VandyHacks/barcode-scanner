@@ -131,7 +131,7 @@ function onDOMContentLoad() {
 
     document.getElementById('submitCheck').addEventListener('click',() => {
       token = document.getElementById('checker').value;
-      scan();
+      setToken();
     })
   }
 
@@ -161,7 +161,6 @@ function onDOMContentLoad() {
         body: JSON.stringify({ token: token })
     }).then(res => {
         if (res.ok) {
-            tokenHeader();
             scan();
             tokenValid = true;
             window.localStorage.storedToken2 = token;
@@ -178,12 +177,12 @@ function onDOMContentLoad() {
   }
 
   function displayAttendee(callback, res) {
-    console.log(res);
+    const header = tokenHeader();
     admitAttendee(res);
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
     fetch(`${EVENT_URL}/${EVENT_ID}/admitted/${res}`, {
-      headers: tokenHeader()
+      headers: header
     }).then(resp => {
         if (resp.ok) {
             console.log('resp ok');
@@ -198,23 +197,25 @@ function onDOMContentLoad() {
   }
 
   function admitAttendee(id) {
+    const header = tokenHeader();
     if (!invalid) {
         fetch(`${EVENT_URL}/${EVENT_ID}/admit/${id}`, {
-            headers: tokenHeader()
+            headers: header
         })
-        // .then(res => {
-        //     console.log(res.json());
-        //     res = { headers: 'admitted' }
-        // });
+        .then(res => {
+            console.log(res.json());
+            res = { headers: 'admitted' }
+        });
     }
     returnToScan();
   }
 
   function unadmitAttendee(id) {
+    const header = tokenHeader();
     console.log('unadmit');
     if (!invalid) {
         fetch(`${EVENT_URL}/${EVENT_ID}/unadmit/${id}`, {
-            headers: tokenHeader()
+            headers: header
         }).then(res => {
             res = { headers: unadmitted }
         });
