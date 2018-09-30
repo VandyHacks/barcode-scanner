@@ -160,7 +160,7 @@ function onDOMContentLoad() {
     console.log(token);
     console.log("pls");
     fetch('https://apply.vandyhacks.org/auth/eventcode/', {
-        method: 'GET',
+        method: 'POST',
         headers: new Headers({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ token: token })
     }).then(res => {
@@ -168,6 +168,7 @@ function onDOMContentLoad() {
             tokenValid = true;
             window.localStorage.storedToken2 = token;
         } else {
+            console.log('invalid');
             authError = 'Invalid token';
         }
     });
