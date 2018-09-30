@@ -1,5 +1,6 @@
 import QRReader from './vendor/qrscan.js';
 import {snackbar} from './snackbar.js';
+import styles from '../css/styles.css';
 import isURL from 'is-url';
 
 let selectedEvent = null;
