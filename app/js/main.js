@@ -86,7 +86,6 @@ function onDOMContentLoad() {
     setTimeout(() => { 
       setCameraOverlay();
       checkPasscode();
-      setToken();
       // scan();
     }, 1000);
   });
@@ -130,6 +129,7 @@ function onDOMContentLoad() {
     console.log('check');
 
     document.getElementById('submitCheck').addEventListener('click',() => {
+      token = document.getElementById('checker').value;
       if(document.getElementById('checker').value === token) {
         scan();
         console.log('scan');
