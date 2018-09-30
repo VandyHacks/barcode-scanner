@@ -160,7 +160,7 @@ function onDOMContentLoad() {
     console.log(token);
     console.log("pls");
     fetch('https://apply.vandyhacks.org/auth/eventcode/', {
-        method: 'POST',
+        method: 'GET',
         headers: new Headers({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ token: token })
     }).then(res => {
