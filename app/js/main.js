@@ -161,6 +161,7 @@ function onDOMContentLoad() {
         body: JSON.stringify({ token: token })
     }).then(res => {
         if (res.ok) {
+            tokenHeader();
             scan();
             tokenValid = true;
             window.localStorage.storedToken2 = token;
@@ -197,7 +198,7 @@ function onDOMContentLoad() {
   function admitAttendee(id) {
     if (!invalid) {
         fetch(`${EVENT_URL}/${EVENT_ID}/admit/${id}`, {
-            headers: tokenHeader
+            headers: tokenHeader()
         })
         // .then(res => {
         //     console.log(res.json());
@@ -211,7 +212,7 @@ function onDOMContentLoad() {
     console.log('unadmit');
     if (!invalid) {
         fetch(`${EVENT_URL}/${EVENT_ID}/unadmit/${id}`, {
-            headers: tokenHeader
+            headers: tokenHeader()
         }).then(res => {
             res = { headers: unadmitted }
         });
