@@ -113,7 +113,7 @@ function onDOMContentLoad() {
 
     scanner.style.display = 'none';
     textBox.innerHTML = '';
-    let info = [res.profile.name,res.email,res.profile.school, res.status.confirmed, res.admittedToEvent];
+    let info = [res.data.profile.name,res.data.email,res.data.profile.school, res.data.status.confirmed, res.data.admittedToEvent];
     let props = ['Name: ', 'Email: ', 'School: ', 'Confirmed: ', 'Admitted: '];
     if (!invalid) {
       info.forEach(element => {
