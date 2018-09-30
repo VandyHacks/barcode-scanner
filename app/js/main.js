@@ -198,7 +198,7 @@ function onDOMContentLoad() {
         }
         // checkAdmit();
     }).then(() => {
-        callback(d.json());
+        setTimeout(callback(d.json()), 1000);
     })
     //.catch(err => setInvalidQr());
   }
@@ -210,7 +210,6 @@ function onDOMContentLoad() {
             headers: header
         })
         .then(res => {
-            console.log(res.json());
             res = { headers: 'admitted' }
         });
     }
