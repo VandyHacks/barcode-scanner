@@ -19,10 +19,9 @@ let EVENT_ID = '5ba688091834080020e18db8';
 
 function tokenHeader() {
   return new Headers({
-       method: 'POST',
-      'x-event-secret': token,
-      'Content-Type': 'application/json'
-  });
+       method: 'GET',
+      'x-event-secret': token
+    });
 };
 
 main();
