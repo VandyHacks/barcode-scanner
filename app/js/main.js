@@ -3,6 +3,7 @@ import {snackbar} from './snackbar.js';
 import styles from '../css/styles.css';
 import isURL from 'is-url';
 
+
 let selectedEvent = null;
 let scanning = false;
 let qrData = [];
@@ -130,7 +131,7 @@ function onDOMContentLoad() {
 
     document.getElementById('submitCheck').addEventListener('click',() => {
       token = document.getElementById('checker').value;
-      if(document.getElementById('checker').value === token) {
+      if(document.getElementById('checker').value === process.env.API_SECRET) {
         scan();
         console.log('scan');
       } else {
