@@ -185,6 +185,8 @@ function onDOMContentLoad() {
     fetch(`${EVENT_URL}/${EVENT_ID}/admitted/${res}`, {
       headers: header
     }).then(resp => {
+        console.log(resp);
+        console.log(resp.json);
         if (resp.ok) {
             d = resp;
             console.log('resp is ' + resp);
