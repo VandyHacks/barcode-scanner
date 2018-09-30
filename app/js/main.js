@@ -185,7 +185,7 @@ function onDOMContentLoad() {
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
     fetch(`${EVENT_URL}/${EVENT_ID}/admitted/${res}`, {
-      'x-event-secret': token
+      headers: header
     }).then(resp => {
         if (resp.ok) {
             d = resp;
@@ -206,7 +206,7 @@ function onDOMContentLoad() {
     const header = tokenHeader();
     if (!invalid) {
         fetch(`${EVENT_URL}/${EVENT_ID}/admit/${id}`, {
-          'x-event-secret': token
+            headers: header
         })
         .then(res => {
             console.log(res.json());
