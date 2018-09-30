@@ -131,13 +131,7 @@ function onDOMContentLoad() {
 
     document.getElementById('submitCheck').addEventListener('click',() => {
       token = document.getElementById('checker').value;
-      console.log(process.env.API_SECRET);
-      if(document.getElementById('checker').value === process.env.API_SECRET) {
-        scan();
-        console.log('scan');
-      } else {
-        console.log('incorrect');
-      }
+      scan();
     })
   }
 
@@ -167,6 +161,7 @@ function onDOMContentLoad() {
         body: JSON.stringify({ token: token })
     }).then(res => {
         if (res.ok) {
+            scan();
             tokenValid = true;
             window.localStorage.storedToken2 = token;
         } else {
