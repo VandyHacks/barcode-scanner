@@ -197,7 +197,7 @@ function onDOMContentLoad() {
             setInvalidQr().then((() => callback(qrData)));
         }
         // checkAdmit();
-    }).then(d => {
+    }).then(() => {
         console.log('d');
         console.log(d);
         setTimeout(callback(d.json()), 5000);
