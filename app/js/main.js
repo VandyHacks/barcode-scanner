@@ -26,6 +26,7 @@ function tokenHeader() {
 
 main();
 // checkPasscode();
+let d;
 
 function main() {
   console.log(1);
@@ -181,7 +182,6 @@ function onDOMContentLoad() {
 
   function displayAttendee(callback, res) {
     const header = tokenHeader();
-    let d;
     admitAttendee(res);
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
@@ -189,7 +189,7 @@ function onDOMContentLoad() {
       headers: header
     }).then(resp => {
         if (resp.ok) {
-            d = resp;
+            d = resp.json();
             console.log('resp is ' + resp);
             // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
         } else {
@@ -197,8 +197,8 @@ function onDOMContentLoad() {
             setInvalidQr().then((() => callback(qrData)));
         }
         // checkAdmit();
-    }).then(() => {
-        setTimeout(callback(d.json()), 5000);
+    }).then(d => {
+        setTimeout(callback(d), 5000);
     })
     //.catch(err => setInvalidQr());
   }
