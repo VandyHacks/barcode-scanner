@@ -109,7 +109,7 @@ function onDOMContentLoad() {
 
   function showResult(res) {
     console.log('asdasd');
-    console.log(res.json());
+    console.log(res);
 
     scanner.style.display = 'none';
     textBox.innerHTML = '';
@@ -198,7 +198,7 @@ function onDOMContentLoad() {
         }
         // checkAdmit();
     }).then(d => {
-        setTimeout(callback(d), 5000);
+        setTimeout(callback(d.json()), 5000);
     })
     //.catch(err => setInvalidQr());
   }
