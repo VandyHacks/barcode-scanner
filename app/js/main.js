@@ -199,7 +199,7 @@ function onDOMContentLoad() {
         }
         // checkAdmit();
     }).then(() => {
-        callback(d);
+        callback(d.json());
     })
     //.catch(err => setInvalidQr());
   }
