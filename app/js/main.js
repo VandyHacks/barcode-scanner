@@ -195,7 +195,7 @@ function onDOMContentLoad() {
             })).then(res => { 
               console.log('res');
               console.log(res);
-              setTimeout(callback(res), 3000); 
+              callback(res);
             });
             // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
         } else {
