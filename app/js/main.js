@@ -182,7 +182,9 @@ function onDOMContentLoad() {
     admitAttendee(res);
     let setInvalidQr = () => invalid = true;
     console.log('displayatt ' + res);
-    fetch(`${EVENT_URL}/${EVENT_ID}/admitted/${res}`).then(resp => {
+    fetch(`${EVENT_URL}/${EVENT_ID}/admitted/${res}`, {
+      headers: tokenHeader()
+    }).then(resp => {
         if (resp.ok) {
             console.log('resp ok');
             // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
