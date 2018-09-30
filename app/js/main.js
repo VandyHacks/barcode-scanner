@@ -108,8 +108,7 @@ function onDOMContentLoad() {
 
   function showResult(res) {
     console.log('asdasd');
-    console.log(res.json);
-    console.log(res.json());
+    console.log(res);
 
     scanner.style.display = 'none';
     textBox.innerHTML = '';
