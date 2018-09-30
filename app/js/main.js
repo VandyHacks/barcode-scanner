@@ -107,6 +107,8 @@ function onDOMContentLoad() {
 
 
   function showResult(res) {
+    console.log('asdasd');
+    console.log(res);
     scanner.style.display = 'none';
     textBox.innerHTML = '';
     let info = [res.status.name,res.email,res.__v, res.status.confirmed, res.admittedToEvent];
