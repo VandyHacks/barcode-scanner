@@ -19,6 +19,8 @@
     <link rel="icon" type="image/png" href="/images/touch/favicon-16x16.png" sizes="16x16"/>
     <link rel="shortcut icon" href="/images/touch/favicon.ico">
     <link rel="manifest" href="/manifest.json">
+    <script src="../dist/bundle.js"></script>
+
   </head>
   <body>
     <div class="app__layout">
@@ -38,8 +40,7 @@
         <!-- Dialog  -->
         <div class="app__dialog app__dialog--hide">
           <div class="app__dialog-content">
-            <h5>QR Code</h5>
-            <input type="text" id="result">
+            <div style="width:200px;height:100%;margin:10px;" id="result"></div>
           </div>
           <div class="app__dialog-actions">
             <button type="button" class="app__dialog-open">Open</button>
@@ -52,6 +53,10 @@
         <!-- Snackbar -->
         <div class="app__snackbar"></div>
       </main>
+    </div>
+    <div id="check_container">
+      <input type="text" id="checker" placeholder="Passcode for permission"/>
+      <button id="submitCheck">Check</button>
     </div>
     <div class="app__overlay">
       <div class="app__overlay-frame"></div>

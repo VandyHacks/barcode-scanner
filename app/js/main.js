@@ -3,8 +3,46 @@ import {snackbar} from './snackbar.js';
 import styles from '../css/styles.css';
 import isURL from 'is-url';
 
+
+let selectedEvent = null;
+let scanning = false;
+let qrData = [];
+let invalid = false;
+let events = [];
+let token = "";
+let tokenValid = false;
+let authError = null;
+let attendees = [];
+
+const EVENT_URL = 'https://apply.vandyhacks.org/api/events';
+let EVENT_ID = '5ba688091834080020e18db8';
+
+function tokenHeader() {
+  return new Headers({
+       method: 'GET',
+      'x-event-secret': token
+    });
+};
+
 main();
+// checkPasscode();
+let d;
+
 function main() {
+  console.log(1);
+  if (window.localStorage.storedToken2) {
+    tokenValid = true;
+    token = window.localStorage.storedToken2;
+  }
+  console.log(2);
+
+  fetch('https://apply.vandyhacks.org/auth/eventcode/').then(res => {
+    if (res.ok) {
+        res.json().then(ev => events = ev.filter(event => event.open));
+    }
+  });
+  console.log(3);
+
   setupServiceWorker();
   window.addEventListener("DOMContentLoaded", onDOMContentLoad);
 }
@@ -44,48 +82,165 @@ function onDOMContentLoad() {
   // Setup event listeners
   window.addEventListener('load', (event) => {
     QRReader.init("#cam");
+    console.log(4);
 
     // Set camera overlay size
     setTimeout(() => { 
       setCameraOverlay();
-      scan();
+      checkPasscode();
+      // scan();
     }, 1000);
   });
   dialogCloseButton.addEventListener('click', hideDialog, false);
-  dialogOpenButton.addEventListener('click', openInBrowser, false);
+  // dialogOpenButton.addEventListener('click', openInBrowser, false);
 
   function setCameraOverlay() {
     window.appOverlay.style.borderStyle = 'solid';
     helpText.style.display = 'block';
   }
 
-  //To open result in browser
-  function openInBrowser() {
-    window.open(copiedText, '_blank', 'toolbar=0,location=0,menubar=0');
-    copiedText = null;
-    hideDialog();
+  // //To open result in browser
+  // function openInBrowser() {
+  //   window.open(copiedText, '_blank', 'toolbar=0,location=0,menubar=0');
+  //   copiedText = null;
+  //   hideDialog();
+  // }
+
+
+  function showResult(res) {
+    console.log('asdasd');
+    console.log(res);
+
+    scanner.style.display = 'none';
+    textBox.innerHTML = '';
+    let info = [res.data.profile.name,res.data.email,res.data.profile.school, res.data.status.confirmed, res.data.admittedToEvent];
+    let props = ['Name: ', 'Email: ', 'School: ', 'Confirmed: ', 'Admitted: '];
+    if (!invalid) {
+      info.forEach(element => {
+        const tag = '<p>' + props.shift() + element + '</p>';
+        textBox.innerHTML += tag;
+      });
+    } else {
+      textBox.innerHTML = 'Not valid attendee';
+    }
+    if (isURL(result)) {
+      dialogOpenButton.style.display = 'inline-block';
+    }
+    dialogElement.classList.remove('app__dialog--hide');
+    dialogOverlayElement.classList.remove('app__dialog--hide');
+  }
+
+  function checkPasscode() {
+    console.log('check');
+
+    document.getElementById('submitCheck').addEventListener('click',() => {
+      token = document.getElementById('checker').value;
+      setToken();
+    })
   }
 
   function scan() {
     scanner.style.display = 'block';
-
+    setEvent();
     QRReader.scan(result => {
-      copiedText = result;
-      textBox.value = result;
-      textBox.select();
       scanner.style.display = 'none';
-      if (isURL(result)) {
-        dialogOpenButton.style.display = 'inline-block';
+      let fetchData = { 
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ 'token': 'dinner', 'body':'stuff'})
       }
-      dialogElement.classList.remove('app__dialog--hide');
-      dialogOverlayElement.classList.remove('app__dialog--hide');
+      console.log(result);
+      tokenValid = true;
+      window.localStorage.storedToken2 = token;
+      displayAttendee(showResult, result);
     });
+  }
+
+  function setToken() {
+    console.log(token);
+    console.log("pls");
+    fetch('https://apply.vandyhacks.org/auth/eventcode/', {
+        method: 'POST',
+        headers: new Headers({ 'Content-Type': 'application/json' }),
+        body: JSON.stringify({ token: token })
+    }).then(res => {
+        if (res.ok) {
+            scan();
+            tokenValid = true;
+            window.localStorage.storedToken2 = token;
+        } else {
+            console.log('invalid');
+            authError = 'Invalid token';
+        }
+    });
+  }
+
+  function setEvent(eventId) {
+    selectedEvent = eventId;
+    scanning = true;
+  }
+
+  function displayAttendee(callback, res) {
+    const header = tokenHeader();
+    admitAttendee(res);
+    let setInvalidQr = () => invalid = true;
+    console.log('displayatt ' + res);
+    fetch(`${EVENT_URL}/${EVENT_ID}/admitted/${res}`, {
+      headers: header
+    }).then(resp => {
+        if (resp.ok) {
+            resp.json().then(data => ({
+              data: data,
+              status: resp.status
+            })).then(res => { 
+              console.log('res');
+              console.log(res);
+              callback(res);
+            });
+            // resp.json().then(el => {qrData = el}).then(() =>callback(qrData)).then(() => checkAdmit(qrData,res));
+        } else {
+            console.log('invalid id');
+            setInvalidQr().then((() => callback(qrData)));
+        }
+        // checkAdmit();
+    })
+    //.catch(err => setInvalidQr());
+  }
+
+  function admitAttendee(id) {
+    const header = tokenHeader();
+    if (!invalid) {
+        fetch(`${EVENT_URL}/${EVENT_ID}/admit/${id}`, {
+            headers: header
+        })
+        .then(res => {
+            res = { headers: 'admitted' }
+        });
+    }
+    returnToScan();
+  }
+
+  function unadmitAttendee(id) {
+    const header = tokenHeader();
+    console.log('unadmit');
+    if (!invalid) {
+        fetch(`${EVENT_URL}/${EVENT_ID}/unadmit/${id}`, {
+            headers: header
+        }).then(res => {
+            res = { headers: unadmitted }
+        });
+    }
+    returnToScan();
+  }
+
+  function returnToScan() {
+    qrData = null;
+    scanning = true;
+    invalid = false;
   }
 
   function hideDialog() {
     copiedText = null;
-    textBox.value = "";
-
     dialogElement.classList.add('app__dialog--hide');
     dialogOverlayElement.classList.add('app__dialog--hide');
     scan();

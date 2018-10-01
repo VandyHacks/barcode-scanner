@@ -2,7 +2,7 @@
   "name": "barcodeScanner",
   "version": "3.0.0",
   "engines": {
-    "node": "4.1.1"
+    "node": "10.3.0"
   },
   "dependencies": {
     "is-url": "^1.2.2"
@@ -27,7 +27,7 @@
     "webpack-dev-server": "2.2.0"
   },
   "scripts": {
-    "start": "webpack-dev-server --hot --inline --open",
+    "start": "node server.js",
     "deploy": "npm run build && bash deploy.sh",
     "build": "cross-env NODE_ENV=production webpack -p --config webpack.config.js"
   }
